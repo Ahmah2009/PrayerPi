@@ -3,6 +3,7 @@ from data.cache import load_time_tuples
 import time
 import datetime
 import subprocess
+import sys
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG,  # You can adjust the logging level
@@ -22,7 +23,13 @@ def run_task():
     Make sure to use the full path and that the script is executable.
     """
     try:
-        subprocess.run(["/home/ahmad/PrayerPi/.venv/bin/python", "src/runner.py"], check=True)
+        subprocess.run(
+            ["/home/ahmad/PrayerPi/.venv/bin/python", "src/runner.py"],
+            check=True,
+            stdout=sys.stdout,  # Redirect stdout to sys.stdout (which is captured by systemd)
+            stderr=sys.stderr   # Redirect stderr to sys.stderr (which is captured by systemd)
+        )
+                
         logging.info("Task executed successfully.")
     except subprocess.CalledProcessError as e:
         logging.error("Task execution failed: %s", e)
