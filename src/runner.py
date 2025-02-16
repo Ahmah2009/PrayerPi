@@ -14,7 +14,7 @@ def play_prayer_alert(prayer_name):
     global sound_playing, exit_flag
     logging.info(f"Time for {prayer_name}!")
 
-    pygame.mixer.music.load("/opt/PrayerPi/prayer_alert.mp3")  # Replace with your sound file
+    pygame.mixer.music.load("/home/ahmad/PrayerPi/prayer_alert.mp3")  # Replace with your sound file
     pygame.mixer.music.play()
     sound_playing = True
 
