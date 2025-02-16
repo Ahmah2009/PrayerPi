@@ -1,7 +1,13 @@
+import logging
 from data.cache import load_time_tuples
 import time
 import datetime
 import subprocess
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG,  # You can adjust the logging level
+                    format='%(asctime)s - %(levelname)s - %(message)s',  # Log format
+                    handlers=[logging.StreamHandler()])  # Log to console
 
 def load_schedule():
     """
@@ -16,10 +22,10 @@ def run_task():
     Make sure to use the full path and that the script is executable.
     """
     try:
-        subprocess.run(["/home/ahmad/PrayerPi/.venv/bin/python", "src/runner.py"],check=True)
-        print("Task executed successfully.")
+        subprocess.run(["/home/ahmad/PrayerPi/.venv/bin/python", "src/runner.py"], check=True)
+        logging.info("Task executed successfully.")
     except subprocess.CalledProcessError as e:
-        print("Task execution failed:", e)
+        logging.error("Task execution failed: %s", e)
 
 def main_loop(schedule):
     """
@@ -29,9 +35,10 @@ def main_loop(schedule):
     while True:
         now = datetime.datetime.now()
         current_tuple = (now.month, now.day, now.hour, now.minute)
-        print(current_tuple)
+        logging.debug("Current time tuple: %s", current_tuple)
+        
         if current_tuple in schedule:
-            print(f"Match found for time {current_tuple}! Executing task...")
+            logging.info(f"Match found for time {current_tuple}! Executing task...")
             run_task()
             # Wait for 60 seconds to avoid triggering the same minute again
             time.sleep(60)

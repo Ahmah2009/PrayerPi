@@ -22,7 +22,7 @@ def play_prayer_alert(prayer_name):
         time.sleep(0.1)  # Reduce CPU usage while waiting for the sound to finish
     sound_playing = False
 
-    print("Sound finished playing.")
+    logging.info("Sound finished playing.")
     exit_flag = True  # Set the flag to True once sound is done, which will exit the main loop
 
 def start_sound():
@@ -43,31 +43,31 @@ def monitor_device(device_path):
     """Monitor a specific input device for key events."""
     try:
         device = evdev.InputDevice(device_path)
-        print(f"Listening for input on {device.path} ({device.name})")
+        logging.info(f"Listening for input on {device.path} ({device.name})")
 
         for event in device.read_loop():
             if event.type == evdev.ecodes.EV_KEY:
                 key_event = evdev.categorize(event)
 
                 if key_event.keystate == key_event.key_down:
-                    print(f"Input detected from {device.name} ({device.path}): {key_event.keycode}")
+                    logging.info(f"Input detected from {device.name} ({device.path}): {key_event.keycode}")
                     stop_sound()  # Stop sound if any key is pressed
                     break  # Exit the loop after detecting a key press
 
     except Exception as e:
-        print(f"Error reading device {device_path}: {e}")
+        logging.error(f"Error reading device {device_path}: {e}")
 
 def find_input_devices():
     """Find all available input devices and monitor them in parallel threads."""
     devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
 
     if not devices:
-        print("No input devices found!")
+        logging.warning("No input devices found!")
         return
 
-    print("Detected input devices:")
+    logging.info("Detected input devices:")
     for device in devices:
-        print(f"- {device.path}: {device.name}")
+        logging.info(f"- {device.path}: {device.name}")
 
     # Start a thread for each device
     for device in devices:
@@ -85,5 +85,5 @@ if __name__ == "__main__":
     while not exit_flag:
         time.sleep(0.1)  # Keep checking if we need to exit
 
-    print("Exiting the script.")
+    logging.info("Exiting the script.")
     sys.exit()  # Exit the program when either sound ends or button is pressed
