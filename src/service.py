@@ -16,7 +16,7 @@ def run_task():
     Make sure to use the full path and that the script is executable.
     """
     try:
-        subprocess.run(["/opt/PrayerPi/.venv/bin/python", "src/runner.py"],check=True)
+        subprocess.run(["/home/ahmad/PrayerPi/.venv/bin/python", "src/runner.py"],check=True)
         print("Task executed successfully.")
     except subprocess.CalledProcessError as e:
         print("Task execution failed:", e)
@@ -29,7 +29,7 @@ def main_loop(schedule):
     while True:
         now = datetime.datetime.now()
         current_tuple = (now.month, now.day, now.hour, now.minute)
-
+        print(current_tuple)
         if current_tuple in schedule:
             print(f"Match found for time {current_tuple}! Executing task...")
             run_task()
