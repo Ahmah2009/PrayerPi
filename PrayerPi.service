@@ -3,22 +3,24 @@ Description=PryerTimeService
 After=network.target
 
 [Service]
-Type=simple
-User=ahmad
+Type=exec
 WorkingDirectory=/home/ahmad/PrayerPi
 ExecStart=/home/ahmad/PrayerPi/.venv/bin/python src/service.py
-Restart=on-failure
 RestartSec=5s
 Environment="PATH=/home/ahmad/PrayerPi/.venv/bin"
 TimeoutStopSec=10
 KillMode=mixed
+Restart=always
+RestartSec=10s
 KillSignal=SIGTERM
-StandardOutput=append:/var/log/prayer.log
-StandardError=append:/var/log/prayer.log
+StandardOutput=append:/home/ahmad/PrayerPi/prayer.log
+StandardError=append:/home/ahmad/PrayerPi/prayer.log
 Environment="DISPLAY=:0"
 Environment="SDL_VIDEODRIVER=dummy"
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
 Environment="PULSE_SERVER=/run/user/1000/pulse/native"
 Environment="SDL_AUDIODRIVER=pulseaudio"
+
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
+
